@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM2</title>
+    <style>
+        /* #invis>span {
+            display: none;
+        } */
+    </style>
+</head>
+
+<body>
+
+    <div id="foo">Hello <span>World!</span></div>
+    <!-- <div id="invis">안보이지 멍충아 <span>에벱ㅂ벱베벱ㅂ</span></div> -->
+
+    <ul id="fruits">
+        <li class="apple">Apple</li>
+    </ul>
+    <!-- beforeBegin -->
+    <div id="foo2">
+        <!-- afterbegin -->
+        text
+        <!-- beforeend -->
+    </div>
+    <!-- afterend -->
+</body>
+<script>
+    // 요소 노드 조작
+
+    // console.log(document.nodeValue)
+    // const $foo = document.querySelector('#foo')
+    // console.log($foo.nodeValue)
+    // console.log($foo.firstChild.nodeValue) // 텍스트 노드가 아닌 애의 nodeValue는 ㅜㅕㅣㅣdla.
+    // $foo.firstChild.nodeValue = '뭘 봐 임마'
+
+    // console.log(document.getElementById('foo').textContent)
+    // document.getElementById('foo').textContent = `Hi <span> there! </span>` // HTML은 파싱되지 않고 텍스트로 취급이 된다. 기존 span은 날라감.
+    // //innerText도 있긴 한데, css에 영향을 받기 떄문에 느리거나 css에 순종적이다.
+    // console.log(document.getElementById('invis').innerText)
+    // document.getElementById('invis').innerText = "안보이긔"
+
+
+    //DOM 조작
+    console.log(document.getElementById('foo').innerHTML) // 얘는 마크업까지도 반영이 된다!
+    document.getElementById('foo').innerHTML = '<span>이렇게 하면 바뀌지롱</span>'
+
+    document.getElementById('fruits').innerHTML += '<li class="banana">BANANA</li>'
+    //근데 이건 크로스사이팅 공격에 취약하다.
+    // document.getElementById('foo').innerHTML = '<img src="x" onerror = alert(document.cookie)>' 요런식으로 에러 띄울 수 있음.
+
+    //이거 막으려면 DOMPurify 라이브러리 사용하면 좋음 ㅇㅇ..
+
+    //또 다른 단점! 얘는 다른 자식애들까지 싹 지워버리고 다시 쓰는 거임
+
+    document.getElementById('fruits').innerHTML += '<li class="melon">Melon</li>' // 얘는 앞에 2개 지워버리고 3개 다시 쓰는 거임.
+    // 게다가 위치 지정도 못한다. 즉 간단한 요소만 간단하게 추가할 때 쓰는 게 좋음.
+
+
+    // 그래서 요런 게 있다.
+    document.getElementById('foo2').insertAdjacentHTML('beforebegin', '<p>beforebegin</p>')
+    document.getElementById('foo2').insertAdjacentHTML('afterbegin', '<p>afterbegin</p>')
+    document.getElementById('foo2').insertAdjacentHTML('beforeend', '<p>beforeend</p>')
+    document.getElementById('foo2').insertAdjacentHTML('afterend', '<p>afterend</p>')
+
+
+    // 노드 자체를 생성해서 추가할 수도 있다.
+
+    const $li = document.createElement('li');
+    const textNode = document.createTextNode('Kiwi')
+    $li.appendChild(textNode)
+    document.getElementById('fruits').appendChild($li)
+
+    // 여러 요소를 개별적으로 넣으면 DOM 리페인팅, 리플로우가 여러번 됨으로, 하나의 컨테이너를 만들어 똭 넣는 게 좋다.
+
+    // const $container = document.createElement('div')
+    // const array = ['straberry', 'mango', 'grape'];
+    // array.forEach((el) => {
+    //     const $li = document.createElement('li');
+    //     const textNode = document.createTextNode(el);
+    //     $li.appendChild(textNode)
+    //     $container.appendChild($li)
+    // })
+    // document.getElementById('fruits').appendChild($container) 이렇게 하면 빈 div가 생성되는 부작용이 있다!
+
+    const $fragment = document.createDocumentFragment();
+    const array = ['straberry', 'mango', 'grape'];
+    array.forEach((el) => {
+        const $li = document.createElement('li');
+        const textNode = document.createTextNode(el);
+        $li.appendChild(textNode)
+        $fragment.appendChild($li)
+    })
+    document.getElementById('fruits').appendChild($fragment) // 이렇게 하면 fragment는 사라지고 안의 내용물만 쏙 들어간다.
+</script>
+
+</html>

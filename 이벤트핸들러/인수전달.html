@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인수전달</title>
+</head>
+
+<body>
+
+    <!-- 프로퍼티방식과 add방식은 함수 호출문이 아닌 함수 자체를 등록해 인수 전달을 할 수 없다. -->
+
+    <label for="">User name
+        <input type="text">
+    </label>
+    <em class="message"></em>
+    <em class="message2"></em>
+
+
+
+
+</body>
+
+<script>
+    const Min = 5;
+    const $input = document.querySelector('input[type=text]');
+    const $msg = document.querySelector('.message');
+    const $msg2 = document.querySelector('.message2');
+
+    // 이런식으로 주거나!
+    const checkUserName = (min) => {
+        $msg.textContent = $input.value.length < min ? `이름은 ${Min}자 이상 입력해주세요` : '';
+
+    }
+
+    $input.addEventListener('blur', () => {
+        checkUserName(Min)
+    })
+
+    // 이벤트 핸들러를 반환하는 함수를 만들어서 할 수도 있다.
+    const CheckUserName2 = (min) => (e) => {
+        $msg2.textContent = $input.value.length < min ? '더 길게 하셈' : '';
+    }
+
+    $input.onblur = CheckUserName2(Min);
+</script>
+
+</html>

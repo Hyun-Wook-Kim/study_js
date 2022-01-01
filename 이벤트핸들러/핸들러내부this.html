@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내부의 this</title>
+</head>
+
+
+<body>
+
+    <button onclick="handleCheck(this)">Click me!</button>
+
+    <br>
+
+    <button class="btn1">0</button>
+    <button class="btn2">0</button>
+
+
+    <button class="btn">0</button>
+    <button class="btnsecond">0</button>
+</body>
+
+
+<script>
+    class App {
+        constructor() {
+            this.$button = document.querySelector('.btn');
+            this.count = 0;
+            // this.$button.onclick = this.increase;
+            this.$button.onclick = this.increase.bind(this); // 여기에서의 bind는 인스턴스를 가리킨다.
+        }
+
+        // increase() {
+        //     this.$button.textContent = ++this.count // 여기서의 this는 클래스가 생성한 인스턴스가 아닌 이벤트가 바인드 된 this.$button을 가리킨다.
+
+        // }
+
+        increase() {
+            this.$button.textContent = ++this.count // 여기서의 this는 클래스가 생성한 인스턴스가 아닌 이벤트가 바인드 된 this.$button을 가리킨다.
+        }
+
+    }
+
+    new App()
+
+    class App2 {
+        constructor() {
+            this.$button = document.querySelector('.btnsecond')
+            this.count = 0;
+            this.$button.onclick = this.increase;
+        }
+        increase = () => {
+            this.$button.textContent = ++this.count; // 이렇게도 할 수 있으나, 이 때의 increase는 포로토타입 메서드가 아닌 인스턴스 메서드가 된다.
+            // increase 화살표 함수 내부의 this는 상위 스코프 App2의 this를 가리키게 된다.
+        }
+    }
+    new App2();
+
+
+
+    function handleCheck(button) {
+        console.log(button) // 인수로 전달한 this의 경우네는 바인딩한 DOM 요소를 가리킨다.
+        console.log(this)
+        // <!-- 여기서의 this는 window를 가리킨다.-->
+    }
+
+    const $button1 = document.querySelector('.btn1')
+    const $button2 = document.querySelector('.btn2')
+
+
+    // 프로퍼티와 add 두 방식 모두 내부의 this 는 이벤트가 바인딩 된 DOM요소를 가리킨다.
+    // (단 애로우 함수는 자체적 this가 없기 때문에, 상위 스코프의 this 즉 window를 가리키게 됨.)
+    $button1.onclick = function (e) {
+        console.log(this);
+        console.log(e.currentTarget)
+            ++this.textContent
+    }
+
+    $button2.addEventListener('click', function (e) {
+        console.log(this)
+        console.log(e.currentTarget)
+            ++this.textContent
+    })
+</script>
+
+</html>

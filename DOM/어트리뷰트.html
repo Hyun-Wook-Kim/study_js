@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>어트리뷰트</title>
+</head>
+
+<body>
+
+    <!-- <input type="text" id="user" value="kim"> -->
+    <!-- <input type="checkbox" checked> -->
+    <ul class="users">
+        <li id="1" data-user-id="7621" data-role="admin">이씨</li>
+        <li id="2" data-user-id="1675" data-role="subscriber">김씨</li>
+    </ul>
+
+
+</body>
+
+<script defer>
+    // const {
+    //     attributes
+    // } = document.getElementById('user')
+    // console.log(attributes.i)
+
+    // //attribute getter / setter
+    // const $input = document.getElementById('user')
+    // const inputValue = $input.getAttribute('value')
+    // console.log(inputValue);
+
+    // $input.setAttribute('value', 'foo')
+
+    // //attribute 검색 / 삭제
+    // console.log($input.hasAttribute('type'))
+    // $input.removeAttribute('type')
+    // console.log($input.hasAttribute('type'))
+    // $input.value = '하위'
+    // console.log($input.value)
+
+    // const $input = document.getElementById('user')
+
+    // $input.oninput = () => {
+    //     console.log($input.value, $input.getAttribute('value')) // getAttribute로 얻은 값은 변하지 않는다!
+    // }
+    // $input.value = 'foo'
+    // console.log($input.value, $input.getAttribute('value')) // value값을 변경해도 마찬가지.
+
+    // console.log($input.id)
+    // $input.id = '바뀜'
+    // console.log($input.id, $input.getAttribute('id')) // 단 id처럼 사용자 입력과 관계가 없는 애는 동기화 된다.
+
+
+    // const $checkbox = document.querySelector('input[type=checkbox]')
+    // console.log($checkbox.getAttribute('checked')) // 얜 문자열
+    // console.log($checkbox.checked) // 얜 불리언 값
+
+
+
+
+    //// data 어트리뷰트와 dataset 프로퍼티
+
+    const users = [...document.querySelector('.users').children]
+
+    // DOM에선 케밥케이스가 카멜 케이스로 바뀜
+    const user = users.find(user => user.dataset.userId == "7621");
+    console.log(user.dataset.role)
+    user.dataset.role = 'webMaster'
+    user.dataset.readThis = 'true'
+    console.log(user.dataset.role, user.dataset.readThis, user.dataset)
+</script>
+
+
+</html>

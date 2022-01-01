@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트 핸들러 등록</title>
+</head>
+
+<body>
+
+
+    <!-- // 1. HTML 이벤트 어트리뷰트 사용 -->
+    <button onclick="sayHi('Lee')">Click me!</button>
+    <button onclick="console.log('hi'); console.log('여러개도 가능!')">여러개의 이벤트 어트리뷰트</button>
+
+    <!-- 2. 이벤트 핸들러 프로퍼티 방식 -->
+    <button id="2">click Me!</button>
+
+    <!-- 3. addEventListener -->
+    <button id="3">addEventListener</button>
+
+</body>
+
+<script>
+    // 이벤트 핸들러 등록 방식
+
+    // 1. HTML 이벤트 어트리뷰트 사용
+    function sayHi(name) {
+        console.log(`Hi! ${name}`)
+    }
+
+    // 2. 이벤트 핸들러 프로퍼티 방식  
+    const $button = document.getElementById('2');
+    $button.onclick = function () {
+        console.log('button Click') // 단점 : 하나의 이벤트 핸들로 프로퍼티에는 하나의 이벤트 핸들러만 바인딩 가능
+    }
+    $button.onclick = function () {
+        console.log('덮어씌워진 함수')
+    }
+
+    // 3. addEventListener 메서드
+    const $button2 = document.getElementById('3')
+    const handleClick = () => console.log('button-Click')
+    $button2.addEventListener('click', handleClick, true) // 세번째 인수는 true-캡처링, false-버블링 여부를 지정해주는 것. 뒤에서 다시 알아보자.
+    // $button2.addEventListener('click', function () {
+    //     console.log(this) // addEventListener메서드는 중복 할당이 가능하다!
+    // })
+
+    //  단 동일한 참조의 이벤트 핸들러를 등록하면 1개만 등록 된다..
+
+
+    $button2.removeEventListener('click', handleClick, true) // 인수는 add한 인수와 동일해야 삭제가 가능. 즉 무명함수의 경우 삭제가 불가능.
+
+    $button2.addEventListener('click', function foo() {
+        console.log('button click')
+        $button2.removeEventListener('click', foo) // 요렇게 하면 이벤트 핸들러가 1번만 호출된다.
+    })
+
+
+    $button.onclick = function () {
+        console.log('프로퍼티 할당')
+    }
+    $button.onclick = null; // 프로퍼티 이벤트 핸들러는 null을 할당해 삭제할 수 있다.
+</script>
+
+</html>

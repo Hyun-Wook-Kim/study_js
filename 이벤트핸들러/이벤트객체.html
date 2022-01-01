@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이벤트객체</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: black;
+            border: 4px solid red;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<!-- <body onclick="showCoords(event)"> 어트리뷰트로 등록할 땐 반드시 event를 사용해야 이벤트 객체 전달받을 수 있다. -->
+
+<body>
+    <!-- 
+    <p>클릭하세요. 클릭한 곳의 좌표가 표시됩니다.</p>
+    <em class="message"></em>
+ -->
+
+    <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <!-- <input type="checkbox">
+    <em class="message2">off</em> -->
+
+    <div class="box">
+
+    </div>
+
+    <input type="text">
+    <em class="message3"></em>
+
+</body>
+
+<script>
+    const $input = document.querySelector('input[type=text]')
+    const $msg = document.querySelector('.message3')
+
+    // 한글을 할 떄는 keypress로 해야 하는 듯.. (뭐 조합문자라 그렇다는데)
+    $input.addEventListener('keypress', (e) => {
+        if (e.key != 'Enter') return;
+
+        $msg.textContent = e.target.value;
+        e.target.value = '';
+    })
+
+    const $box = document.querySelector('.box')
+    const initialMousePos = {
+        x: 0,
+        y: 0
+    }
+    const offset = {
+        x: 0,
+        y: 0
+    }
+    const move = e => {
+        offset.x = e.clientX - initialMousePos.x;
+        offset.y = e.clientY - initialMousePos.y;
+        console.log(offset.x, offset.y)
+        $box.style.transform = `translate3d(${offset.x}px , ${offset.y}px, 0)`
+
+    }
+
+    $box.addEventListener('mousedown', e => {
+        initialMousePos.x = e.clientX - offset.x;
+        initialMousePos.y = e.clientY - offset.y;
+        console.log(initialMousePos.x, initialMousePos.y)
+
+        $box.addEventListener('mousemove', move);
+    })
+
+    document.addEventListener('mouseup', () => {
+        $box.removeEventListener('mousemove', move)
+    })
+
+    // const $message = document.querySelector('.message');
+
+    // function showCoords(event) {
+    //     $message.textContent = `clientX : ${event.clientX}, clientY : ${event.clientY}`
+    // }
+
+    // document.onclick = showCoords
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    //   이벤트 객체의 상속 구조
+
+    let e = new Event('foo'); // Event 생성자를 통해 특정 타입의 evnet 객체를 생성할 수 있음.
+    console.log(e)
+    e = new FocusEvent('focus');
+    console.log(e)
+    // e = new Event() 빈 값으로는 생성이 불가능하다.
+    e = new MouseEvent('click');
+    console.log(e)
+    e = new KeyboardEvent('keyup');
+    console.log(e)
+    e = new InputEvent('change');
+    console.log(e)
+
+
+    // 이벤트 객체의 프로퍼티는 발생한 이벤트의 타입에 따라 달라진다.
+
+    // 이벤트 객체의 공통 프로퍼티
+
+    // type : 이벤트 타입 (string)
+    // target / currentTarget : 이벤트를 발생시킨 DOM요소 / 이벤트가 바인딩 된 DOM 요소
+    // eventPahse : 이벤트 전파 단계 (0 - 이벤트 없음. 1 - 캡처링. 2 - 타깃단계. 3 - 버블링단계)
+    // bubbles : 이벤트를 버블링으로 전파하는지 여부. (focus, blur, load, aobr, mousenter등은 버블링 하지 않음)
+    // cancelable : preventDefault를 이용해 이벤트의 기본 동작을 취소할 수 있는지의 여부.
+    // defaultPrevented : preventDefault를 이ㅛ해 이번트를 취소 했는지.
+    // isTrusted : 사용자 행위ㅔ 의해 발생한 이벤트인지. (click드의 메서드를 이용해 인위적으로 발생한 이벤트의 경우 false값)
+    // timeStamp : 이벤트가 발생한 시각.
+
+    // const $checkbox = document.querySelector('input[type=checkbox]')
+    // const $message2 = document.querySelector('.message2')
+
+    // $checkbox.addEventListener('change', (e) => {
+    //     console.log(e);
+    //     $message2.textContent = e.target.checked == true ? 'on' : 'off'
+    // })
+</script>
+
+</html>

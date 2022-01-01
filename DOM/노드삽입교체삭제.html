@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>노드삽입!</title>
+</head>
+
+<body>
+    <!-- <ul id="fruits">
+        <li>Apple</li>
+        <li>Banana</li>
+    </ul> -->
+
+
+    <ul id="fruits">
+        <li>Apple</li>
+    </ul>
+</body>
+
+<script>
+    // const $li = document.createElement('li')
+    // $li.textContent = 'Orange'
+    // // document.getElementById('fruits').appendChild($li) // 얘는 무조건 맨 뒤
+    // const $fruits = document.getElementById('fruits')
+    // $fruits.insertBefore($li, $fruits.lastElementChild) // 얘는 인수 노드 이전! 얘가 null이면 그냥 appendChld처럼 작동.
+
+    // const [$apple, $orange, ] = $fruits.children;
+    // $fruits.appendChild($apple);
+    // $fruits.insertBefore($orange, $fruits.lastElementChild) // 이미 있는 노드를 다시 추가하면 노드가 이동이 된다!
+
+
+    const $fruits = document.getElementById('fruits');
+    const $apple = $fruits.firstElementChild;
+
+    const $shallow = $apple.cloneNode();
+    const $deep = $apple.cloneNode(true) // 깊은 복사. 자식 노드들까지 싹 다 복사함.
+    $fruits.appendChild($shallow)
+    $fruits.appendChild($deep)
+
+    const $newChild = document.createElement('li');
+    $newChild.textContent = 'grapes'
+
+    // $fruits.replaceChildren(); 빈 값으로 하면 싹 다 지워짐..
+    $fruits.replaceChild($newChild, $apple)
+
+    $fruits.removeChild($fruits.children[1]) // 지워버렷!
+</script>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커스텀 이벤트</title>
+
+
+
+</head>
+
+<body>
+
+    <button class="btn">Click Me</button>
+
+
+</body>
+
+<script>
+    // <!-- 커스텀 이벤트를 만들어보자! -->
+    const keyboardEvent = new KeyboardEvent('keyup');
+    console.log(keyboardEvent.type)
+
+    // foo 타입의 커스텀 이벤트 생성
+    const customEvent = new CustomEvent('foo');
+    console.log(customEvent.type)
+
+    // 커스텀 이벤트는 기본적으로 버블링 되지 않으며, preventDefault를 사용할 수 없다.
+    console.log(customEvent.bubbles)
+    console.log(customEvent.cancelable)
+
+    // 이렇게 두번 째 인수에 설정을 해주면 됨.
+    const customEvent2 = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true
+    })
+
+    console.log(customEvent2.bubbles)
+    console.log(customEvent2.bubbles)
+    console.log(customEvent2.cancelable)
+
+    // 다른 고유의 프로퍼티도 지정해줄 수 있다.
+    const mouseEvent = new MouseEvent('click', {
+        bubbles: true,
+        cancelable: true,
+        clientX: 50,
+        clilentY: 100
+    })
+    console.log(mouseEvent.clientX)
+    console.log(mouseEvent.clientY)
+
+    const keyboardEvent2 = new KeyboardEvent('keyup', {
+        key: 'Enter'
+    })
+    console.log(keyboardEvent2.key)
+
+
+
+    //  그럼 이걸 어떻게 발생시키냐?
+    // 커스텀 이벤트 등록 전에는 이벤트 핸들러를 먼저 등록해야 한다.
+    const $button = document.querySelector('.btn');
+    // $button.addEventListener('click', e => {
+    //     console.log(e);
+    //     alert(`${e} Clicked!`)
+    // })
+
+    // const customEvent3 = new MouseEvent('click')
+    // // $button.dispatchEvent(customEvent3)
+    // console.clear()
+
+    $button.addEventListener('foo', (e) => {
+        console.log(e.detail)
+    })
+
+    const customEvent4 = new CustomEvent('foo', {
+        //  customEvnet의 두번 째 인수로는, 함께 전달할 정보가 담겨 있다.
+        detail: {
+            message: 'Hello!'
+        }
+    });
+    console.log(customEvent4.type)
+    // 이런식으로 디스패치를 하면 이벤트가 발생할 경우 customEvent4를 dispatch 할 수 있다.
+    $button.addEventListener('click', () => {
+        $button.dispatchEvent(customEvent4)
+    })
+
+    // 참고로 커스텀 이벤트는 addEventListener 방식으로만 등록할 수 있음.
+</script>
+
+</html>

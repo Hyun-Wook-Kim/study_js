@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스타일과클래스</title>
+    <style>
+        /* .box {
+            width: 100px;
+            height: 100px;
+            background-color: antiquewhite;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+        } */
+
+        body {
+            color: red;
+        }
+
+        .box {
+            width: 100px;
+            height: 50px;
+            background-color: cornsilk;
+            border: 1px solid black;
+        }
+
+        .box::before {
+            content: 'hello';
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- <div style="color: red;">
+        Hello Wordl!
+    </div>
+
+    <div class="box red another other">
+        Hello World!
+    </div> -->
+
+    <div class="box">Box</div>
+
+</body>
+
+<script>
+    // const $div = document.querySelector('div')
+    // console.log($div.style)
+    // $div.style.padding = '40px' // 단위가 필요한 애는 꼭 지정해주어야 함!
+    // $div.style.backgroundColor = 'blue' // css의 케밥케이스는 카멜케이스로!
+
+
+
+    // const $box = document.querySelector('.box')
+    // console.log($box.className)
+    // $box.className = $box.className.replace('red', 'blue') // className은 공백 문자를 포함한 문자열을 반환해 조금 불편함.
+
+    // $box.classList.remove('blue') // classList가 반환하는 객체는 live 객체이다 (상태 변화에 반응함) 유사 배열이며 이터러블임.
+    // $box.classList.add('hi', 'hello')
+    // console.log($box.classList)
+    // console.log($box.classList.item(0)) // item은 인수 번째 클래스를 반환한다.
+    // console.log($box.classList.item(1))
+    // console.log($box.classList.item(2))
+    // console.log($box.classList.contains('hi'))
+    // $box.classList.replace('hi', '안녕')
+    // console.log($box.classList)
+
+    // $box.classList.toggle('foo', 1 > 0) // 두번째 인수가 true면 강제로 추가, false면 강제로 제거
+    // console.log($box.classList)
+    // $box.classList.toggle('foo', 1 < 0)
+    // console.log($box.classList)
+
+    const $box = document.querySelector('.box')
+    console.log($box.style) // 이건 inline-style만 뽑아낼 수 있음.
+
+    // console.log(window.getComputedStyle($box)) // 얘는 모든 스타일 (임베딩, 인라인, 상속, js 적용 기본 등등)을 싹 다 뽑아온다
+    const style = window.getComputedStyle($box);
+    console.log(style.backgroundColor, style.border)
+    console.log(window.getComputedStyle($box, ':before').content) // after / before 선택자도 가능하다!
+</script>
+
+</html>
